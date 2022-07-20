@@ -41,6 +41,7 @@
 		6ADE7F9428883A9B0056084E = {
 			isa = PBXGroup;
 			children = (
+				6ADE7FB428883C0B0056084E /* README.md */,
 				6ADE7F9F28883A9B0056084E /* SimpleTimer */,
 				6ADE7F9E28883A9B0056084E /* Products */,
 			);
@@ -64,7 +65,6 @@
 				6ADE7FA928883A9C0056084E /* Assets.xcassets */,
 				6ADE7FAB28883A9C0056084E /* LaunchScreen.storyboard */,
 				6ADE7FAE28883A9C0056084E /* Info.plist */,
-				6ADE7FB428883C0B0056084E /* README.md */,
 			);
 			path = SimpleTimer;
 			sourceTree = "<group>";
