@@ -24,6 +24,7 @@
 		6ADE7FA928883A9C0056084E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6ADE7FAC28883A9C0056084E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6ADE7FAE28883A9C0056084E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6ADE7FB428883C0B0056084E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 				6ADE7FA928883A9C0056084E /* Assets.xcassets */,
 				6ADE7FAB28883A9C0056084E /* LaunchScreen.storyboard */,
 				6ADE7FAE28883A9C0056084E /* Info.plist */,
+				6ADE7FB428883C0B0056084E /* README.md */,
 			);
 			path = SimpleTimer;
 			sourceTree = "<group>";
