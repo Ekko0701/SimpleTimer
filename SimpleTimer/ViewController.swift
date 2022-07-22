@@ -9,8 +9,10 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var timerText: Int = 0
+    var timer = Timer()
+    var timerIsOn = false
     let timerShape = CAShapeLayer()
+    var seconds = 60
     
     
     @IBOutlet weak var timerLabel: UILabel!
@@ -19,14 +21,21 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("ViewDidLoad")
+        
         createTrackCircle()
         createTimerCircle()
-            }
+    }
     
     @IBAction func tappedStartButton(_ sender: Any) {
-        timerText = 0
+        if timerIsOn {
+            
+            timerIsOn = false
+        } else {
+            timerIsOn = true
+        }
         createTimer()
-        timerCircleAnimation()
+        timerCircleAnimation(duration: TimeInterval(seconds))
+        
     }
 }
 
@@ -34,24 +43,23 @@ extension ViewController {
     
     // Create Timer
     func createTimer() {
-        let timer = Timer.scheduledTimer(
+        timer.invalidate()
+        timer = Timer.scheduledTimer(
             timeInterval: 1,
             target: self,
             selector: #selector(fireTimer),
             userInfo: nil,
             repeats: true)
-        
-        //timer.tolerance = 10
-        
     }
     
     @objc func fireTimer() {
-        timerText += 1
-        DispatchQueue.main.async {
-            self.timerLabel.text = String(self.timerText)
-        }
+        seconds -= 1
+        timerLabel.text = String(seconds)
+        print(seconds)
         
-        print(timerText)
+        if(seconds == 0) {
+            timer.invalidate()
+        }
     }
     
     // Create Track Circle
@@ -75,26 +83,25 @@ extension ViewController {
     func createTimerCircle() {
         let circlePath = UIBezierPath(arcCenter: view.center,
                                       radius: 150,
-                                      startAngle: -(.pi / 2),
-                                      endAngle: .pi * 2,
+                                      startAngle: CGFloat(-Double.pi / 2),
+                                      endAngle: CGFloat(3 * Double.pi / 2),
                                       clockwise: true)
         //let timerShape = CAShapeLayer()
         timerShape.path = circlePath.cgPath
         timerShape.lineWidth = 15
+        timerShape.lineCap = .round
         timerShape.strokeColor = UIColor.blue.cgColor
-        timerShape.strokeEnd = 1
+        timerShape.strokeEnd = 0
         timerShape.fillColor = UIColor.clear.cgColor
         view.layer.addSublayer(timerShape)
     }
     
-    func timerCircleAnimation() {
+    func timerCircleAnimation(duration: TimeInterval) {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.toValue = 0
-        animation.duration = 10 // 10초간 진행
-        
-        animation.isRemovedOnCompletion = false
+        animation.duration = duration // 10초간 진행
+        animation.toValue = 1.0
         animation.fillMode = .forwards
-        
+        animation.isRemovedOnCompletion = false
         timerShape.add(animation, forKey: "animation")
     }
 }
