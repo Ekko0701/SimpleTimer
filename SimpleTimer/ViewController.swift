@@ -7,12 +7,13 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: CommonViewController {
     
     var timer = Timer()
     var timerIsOn = false
+    var timerStart = false
     let timerShape = CAShapeLayer()
-    var seconds = 60
+    var seconds = 60 * 25
     
     
     @IBOutlet weak var timerLabel: UILabel!
@@ -22,20 +23,60 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         print("ViewDidLoad")
         
+        setUpStyle()
         createTrackCircle()
         createTimerCircle()
+        
+        
     }
     
     @IBAction func tappedStartButton(_ sender: Any) {
+        
         if timerIsOn {
+            // 타이머가 실행중인 경우
+            // Pause Timer
+            print("Timer is On: \(timerIsOn)")
+            startButton.setImage(UIImage(systemName: "play",withConfiguration: boldConfig), for: .normal)
+            
+            timer.invalidate()
+            pauseAnimation()
             
             timerIsOn = false
         } else {
-            timerIsOn = true
+            // 타이머가 정지 상태인 경우
+            // Start or Restart Timer
+            if timerStart {
+                print("Timer is On: \(timerIsOn)")
+                startButton.setImage(UIImage(systemName: "pause", withConfiguration: boldConfig), for: .normal)
+                
+                createTimer()
+                restartAnimation()
+                
+                timerIsOn = true
+            } else {
+                print("Timer is On: \(timerIsOn)")
+                startButton.setImage(UIImage(systemName: "pause", withConfiguration: boldConfig), for: .normal)
+                
+                createTimer()
+                timerCircleAnimation(duration: TimeInterval(seconds))
+                
+                timerStart = true
+                timerIsOn = true
+            }
         }
-        createTimer()
-        timerCircleAnimation(duration: TimeInterval(seconds))
+    }
+    
+    func setUpStyle() {
+        view.backgroundColor = .backgroundTeal
+        timerLabel.textColor = .white
+        timerLabel.text = String(seconds)
+        timerLabel.font = UIFont.boldSystemFont(ofSize: 32)
         
+        
+        startButton.tintColor = .white
+//        let startButtonImage = UIImage(systemName: "play",withConfiguration: boldConfig)
+//        let pauseButtonImage = UIImage(systemName: "pause", withConfiguration: boldConfig)
+        startButton.setImage(UIImage(systemName: "play", withConfiguration: boldConfig), for: .normal)
     }
 }
 
@@ -90,7 +131,7 @@ extension ViewController {
         timerShape.path = circlePath.cgPath
         timerShape.lineWidth = 15
         timerShape.lineCap = .round
-        timerShape.strokeColor = UIColor.blue.cgColor
+        timerShape.strokeColor = UIColor.timerYellow.cgColor
         timerShape.strokeEnd = 0
         timerShape.fillColor = UIColor.clear.cgColor
         view.layer.addSublayer(timerShape)
@@ -103,6 +144,24 @@ extension ViewController {
         animation.fillMode = .forwards
         animation.isRemovedOnCompletion = false
         timerShape.add(animation, forKey: "animation")
+    }
+    
+    func pauseAnimation() {
+        print("Pause the Animation")
+        let pausedTime = timerShape.convertTime(CACurrentMediaTime(), from: nil)
+        timerShape.speed = 0.0
+        timerShape.timeOffset = pausedTime
+    }
+    
+    func restartAnimation() {
+        print("Restart the Animation")
+        let pausedTime = timerShape.timeOffset
+        timerShape.speed = 1.0
+        timerShape.timeOffset = 0.0
+        timerShape.beginTime = 0.0
+        
+        let timeSincePause = timerShape.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        timerShape.beginTime = timeSincePause
     }
 }
 
